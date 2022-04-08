@@ -120,23 +120,7 @@ const schema = {
     enum: ["PENDING", "ACCEPTED", "REJECTED"],
     default: "PENDING"
   },
-  totalCreations: {
-    type: Number,
-    //required: true,
-  },
-  totalNftOwned: {
-    type: Number,
-    //required: true,
-  },
-  totalInSale: {
-    type: Number,
-    //required: true,
-  },
-  totalInAuction: {
-    type: Number,
-    //required: true,
-  },
-  totalCollections: {
+  totalTrades: {
     type: Number,
     //required: true,
   },

@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { level, logger } from "../../config/logger";
 
 import userModel from "../../model/user";
-import nftModel from "../../model/trades";
+import tradesModel from "../../model/trades";
 import { Storage } from "@google-cloud/storage";
 
 
@@ -24,85 +24,6 @@ export const userAccount = async (_id: any) => {
   });
 
   if (userData && userData.length > 0) {
-    const [totalCreations] = await Promise.all([
-      nftModel
-        .find({
-          $or: [
-            {
-              $and: [
-                { contract_type: { $eq: "ERC721" } },
-                { ownerId: { $eq: _id } },
-                { creatorId: { $eq: _id } },
-              ],
-            },
-            {
-              $and: [
-                { contract_type: { $eq: "ERC721" } },
-                { ownerId: { $eq: _id } },
-                { creatorId: { $ne: _id } },
-              ],
-            },
-            {
-              $and: [
-                { contract_type: { $eq: "ERC721" } },
-                { ownerId: { $ne: _id } },
-                { creatorId: { $eq: _id } },
-              ],
-            },
-            {
-              $and: [
-                { contract_type: { $eq: "ERC1155" } },
-                { ownerId: { $eq: _id } },
-                { creatorId: { $eq: _id } },
-              ],
-            },
-            {
-              $and: [
-                { contract_type: { $eq: "ERC1155" } },
-                { ownerId: { $ne: _id } },
-                { creatorId: { $eq: _id } },
-              ],
-            },
-          ],
-        })
-        .count(),
-    ]);
-    const totalNftOwned = await nftModel.count({
-      $or: [
-        {
-          $and: [
-            { contract_type: { $eq: "ERC721" } },
-            { ownerId: { $eq: _id } },
-          ],
-        },
-        {
-          $and: [
-            { contract_type: { $eq: "ERC1155" } },
-            { ownerId: { $eq: _id } },
-          ],
-        },
-      ],
-    });
-    const totalInSale = await nftModel.count({
-      $or: [
-        {
-          $and: [
-            { ownerId: { $eq: _id } },
-            { formOfSale: { $eq: "FIXEDPRICE" } },
-          ],
-        }
-      ],
-    });
-    const totalInAuction = await nftModel.count({
-      $or: [
-        {
-          $and: [
-            { ownerId: { $eq: _id } },
-            { formOfSale: { $eq: "AUCTION" } },
-          ],
-        }
-      ],
-    });
 
     const userJson = {
       userId: userData[0]._id,
@@ -267,7 +188,7 @@ export const getUserProfile = async (_id: any) => {
 
   if (userData && userData.length > 0) {
     const [totalCreations] = await Promise.all([
-      nftModel
+      tradesModel
         .find({
           $or: [
             {
@@ -309,42 +230,6 @@ export const getUserProfile = async (_id: any) => {
         })
         .count(),
     ]);
-    const totalNftOwned = await nftModel.count({
-      $or: [
-        {
-          $and: [
-            { contract_type: { $eq: "ERC721" } },
-            { ownerId: { $eq: _id } },
-          ],
-        },
-        {
-          $and: [
-            { contract_type: { $eq: "ERC1155" } },
-            { ownerId: { $eq: _id } },
-          ],
-        },
-      ],
-    });
-    const totalInSale = await nftModel.count({
-      $or: [
-        {
-          $and: [
-            { ownerId: { $eq: _id } },
-            { formOfSale: { $eq: "FIXEDPRICE" } },
-          ],
-        }
-      ],
-    });
-    const totalInAuction = await nftModel.count({
-      $or: [
-        {
-          $and: [
-            { ownerId: { $eq: _id } },
-            { formOfSale: { $eq: "AUCTION" } },
-          ],
-        }
-      ],
-    });
 
     const userJson = {
       userId: userData[0]._id,

@@ -15,7 +15,7 @@ import userModel, {
   LoginInput
 } from "../../model/user";
 
-import nftModel from "../../model/trades";
+import tradesModel from "../../model/trades";
 
 import JWTAuth from "../../service/jwt_auth/jwt_auth";
 
@@ -195,7 +195,7 @@ export const loginUser = async (loginInput: LoginInput) => {
   const auth = new JWTAuth();
   const accessToken = await auth.createToken(tokenPayload);
   const [totalCreations] = await Promise.all([
-    nftModel.find({ userId: userData[0]._id }).count(),
+    tradesModel.find({ userId: userData[0]._id }).count(),
   ]);
   const data = {
     error: false,
@@ -265,7 +265,7 @@ export const googleLogin = async (
     const auth = new JWTAuth();
     const accessToken = await auth.createToken(tokenPayload);
     const [totalCreations] = await Promise.all([
-      nftModel.find({ userId: userData[0]._id }).count()
+      tradesModel.find({ userId: userData[0]._id }).count()
     ]);
     const data = {
       error: false,
@@ -296,7 +296,7 @@ export const googleLogin = async (
   const auth = new JWTAuth();
   const accessToken = await auth.createToken(tokenPayload);
   const [totalCreations] = await Promise.all([
-    nftModel.find({ userId: userData[0]._id }).count(),
+    tradesModel.find({ userId: userData[0]._id }).count(),
   ]);
   const data = {
     error: false,
